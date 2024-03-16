@@ -3,8 +3,9 @@ package com.ted.milanopizza.controller;
 import com.ted.milanopizza.dto.CustomerRequest;
 import com.ted.milanopizza.model.Customer;
 import com.ted.milanopizza.model.Zipcode;
-import com.ted.milanopizza.repo.CustomerRepo;
-import com.ted.milanopizza.repo.ZipcodeRepo;
+import com.ted.milanopizza.repository.CustomerRepository;
+import com.ted.milanopizza.repository.ZipcodeRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,33 +15,35 @@ import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin("http://localhost:5173")
-
+@Slf4j
 @RestController
 public class CustomerController {
 
     @Autowired
-    private CustomerRepo customerRepo;
+    private CustomerRepository customerRepository;
     @Autowired
-    private ZipcodeRepo zipcodeRepo;
+    private ZipcodeRepository zipcodeRepository;
 
     @GetMapping("/customer")
-    public ResponseEntity<List<CustomerRepo.CustomerWithZipcodeId>>getAllCustomers() {
+    public ResponseEntity<List<CustomerRepository.CustomerWithZipcodeId>>getAllCustomers() {
         try {
-            List<CustomerRepo.CustomerWithZipcodeId> customerList = customerRepo.findAllWithZipcodeId();
+            List<CustomerRepository.CustomerWithZipcodeId> customerList = customerRepository.findAllWithZipcodeId();
 
             if (customerList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
+            log.info("SUCCESS: CUSTOMERS RETURNED");
             return new ResponseEntity<>(customerList, HttpStatus.OK);
         } catch (Exception e) {
+            log.error("### SERVER ERROR: {}", e.getMessage());
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/customer/{id}")
-    public ResponseEntity<CustomerRepo.CustomerWithZipcodeId> getCustomerById(@PathVariable Long id) {
+    public ResponseEntity<CustomerRepository.CustomerWithZipcodeId> getCustomerById(@PathVariable Long id) {
 
-        Optional<CustomerRepo.CustomerWithZipcodeId> customerData = customerRepo.findByIdWithZipcode(id);
+        Optional<CustomerRepository.CustomerWithZipcodeId> customerData = customerRepository.findByIdWithZipcode(id);
 
         return customerData.map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -53,8 +56,8 @@ public class CustomerController {
     // we instantiate the customer and set its parent!
     @PostMapping("/customer")
     public ResponseEntity<Customer> addCustomer(@RequestBody CustomerRequest customerRequest) {
-        Optional<Zipcode> zipcodeOptional = zipcodeRepo.findById(customerRequest.getZipcode_id());
-        if (!zipcodeOptional.isPresent()) {
+        Optional<Zipcode> zipcodeOptional = zipcodeRepository.findById(customerRequest.getZipcode_id());
+        if (zipcodeOptional.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Zipcode zipcode = zipcodeOptional.get();
@@ -62,15 +65,15 @@ public class CustomerController {
         customer.setTelephoneID(customerRequest.getTelephoneID());
         customer.setStreetAddress(customerRequest.getStreetAddress());
         customer.setZipcode(zipcode);
-        customerRepo.save(customer);
+        customerRepository.save(customer);
         return new ResponseEntity<>(customer, HttpStatus.OK);
     }
 
     // update customer
     @PostMapping("/customer/{id}")
     public ResponseEntity<Customer> updateCustomerById(@PathVariable Long id, @RequestBody CustomerRequest newCustomer) {
-        Optional<Customer> oldCustomerData = customerRepo.findById(id);
-        Optional<Zipcode> oldZipcodeData = zipcodeRepo.findById(newCustomer.getZipcode_id());
+        Optional<Customer> oldCustomerData = customerRepository.findById(id);
+        Optional<Zipcode> oldZipcodeData = zipcodeRepository.findById(newCustomer.getZipcode_id());
 
         if (oldCustomerData.isPresent() && oldZipcodeData.isPresent()) {
             Customer existingCustomer = oldCustomerData.get();
@@ -92,7 +95,7 @@ public class CustomerController {
             updatedCustomer.setStreetAddress(existingCustomer.getStreetAddress());
             updatedCustomer.setZipcode(existingCustomer.getZipcode());
 
-            Customer savedCustomer = customerRepo.save(existingCustomer);
+            Customer savedCustomer = customerRepository.save(existingCustomer);
             return new ResponseEntity<>(savedCustomer, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -100,7 +103,7 @@ public class CustomerController {
 
     @DeleteMapping("/customer/{id}")
     public ResponseEntity<HttpStatus> deleteZipcodeById(@PathVariable Long id) {
-        customerRepo.deleteById(id);
+        customerRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

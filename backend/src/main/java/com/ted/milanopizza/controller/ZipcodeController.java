@@ -1,7 +1,10 @@
 package com.ted.milanopizza.controller;
 
 import com.ted.milanopizza.model.Zipcode;
-import com.ted.milanopizza.repo.ZipcodeRepo;
+import com.ted.milanopizza.repository.ZipcodeRepository;
+import com.ted.milanopizza.service.ZipcodeService;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,22 +12,25 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @CrossOrigin("http://localhost:5173")
 
+@Slf4j
+@AllArgsConstructor
 @RestController
 public class ZipcodeController {
 
     @Autowired
-    private ZipcodeRepo zipcodeRepo;
+    private ZipcodeRepository zipcodeRepository;
+    private final ZipcodeService zipcodeService;
 
     // get all zipcodes
     @GetMapping("/zipcode")
     public ResponseEntity<List<Zipcode>> getAllZipcodes() {
         try {
-            List<Zipcode> zipcodeList = new ArrayList<>();
-            zipcodeRepo.findAll().forEach(zipcodeList::add);
+            List<Zipcode> zipcodeList = new ArrayList<>(zipcodeRepository.findAll());
 
             if (zipcodeList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -39,7 +45,7 @@ public class ZipcodeController {
 
     @GetMapping("/zipcode/{id}")
     public ResponseEntity<Zipcode> getZipcodeById(@PathVariable Long id) {
-        Optional<Zipcode> zipcodeData = zipcodeRepo.findById(id);
+        Optional<Zipcode> zipcodeData = zipcodeRepository.findById(id);
 
         if (zipcodeData.isPresent()) {
 
@@ -52,43 +58,25 @@ public class ZipcodeController {
     @PostMapping("/zipcode")
     public ResponseEntity<Zipcode> addZipcode(@RequestBody Zipcode zipcode) {
 
-        Zipcode zipcodeObj = zipcodeRepo.save(zipcode);
+        Zipcode zipcodeObj = zipcodeRepository.save(zipcode);
 
         return new ResponseEntity<>(zipcodeObj, HttpStatus.OK);
     }
 
-    @PostMapping("/zipcode/{id}")
-    public ResponseEntity<Zipcode> updateZipcodeById(@PathVariable Long id, @RequestBody Zipcode newZipcodeData) {
-        Optional<Zipcode> oldZipcodeData = zipcodeRepo.findById(id);
-
-        if (oldZipcodeData.isPresent()) {
-            Zipcode updatedZipcodeData = oldZipcodeData.get();
-
-            // Check and update fields if they are present in the JSON request
-            if (newZipcodeData.getZipcodeID() != null) {
-                updatedZipcodeData.setZipcodeID(newZipcodeData.getZipcodeID());
-            }
-            if (newZipcodeData.getState() != null) {
-                updatedZipcodeData.setState(newZipcodeData.getState());
-            }
-            if (newZipcodeData.getCity() != null) {
-                updatedZipcodeData.setCity(newZipcodeData.getCity());
-            }
-            if (newZipcodeData.getCustomers() != null) {
-                updatedZipcodeData.setCustomers(newZipcodeData.getCustomers());
-            }
-
-            // new entity here
-
-            Zipcode zipcodeObj = zipcodeRepo.save(updatedZipcodeData);
-            return new ResponseEntity<>(zipcodeObj, HttpStatus.OK);
+    @PutMapping("/zipcode/{id}")
+    public ResponseEntity<Map<String, String>> updateZipcodeById(@PathVariable Long id, @RequestBody Zipcode newZipcodeData) {
+        try {
+            zipcodeService.updateZipcode(id, newZipcodeData);
+            return new ResponseEntity<>(Map.of("Success", "Zipcode Updated!"), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("### ERROR: {} not processed, {}", id, e.getMessage());
+            return new ResponseEntity<>(Map.of("error", "Zipcode not updated"), HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/zipcode/{id}")
     public ResponseEntity<HttpStatus> deleteZipcodeById(@PathVariable Long id) {
-        zipcodeRepo.deleteById(id);
+        zipcodeRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

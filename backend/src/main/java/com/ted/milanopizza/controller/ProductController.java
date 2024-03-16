@@ -1,6 +1,6 @@
 package com.ted.milanopizza.controller;
 import com.ted.milanopizza.model.Product;
-import com.ted.milanopizza.repo.ProductRepo;
+import com.ted.milanopizza.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @RestController
 public class ProductController {
     @Autowired
-    private ProductRepo productRepo;
+    private ProductRepository productRepository;
 
     // get all products
     @GetMapping("/product")
@@ -23,7 +23,7 @@ public class ProductController {
         try 
         {
             List<Product> productList = new ArrayList<>();
-            productRepo.findAll().forEach(productList::add);
+            productRepository.findAll().forEach(productList::add);
 
             if (productList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -41,7 +41,7 @@ public class ProductController {
 
     @GetMapping("/product/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable Long id) {
-        Optional<Product> productData = productRepo.findById(id);
+        Optional<Product> productData = productRepository.findById(id);
 
         if (productData.isPresent()) {
             return new ResponseEntity<>(productData.get(), HttpStatus.OK);
@@ -53,7 +53,7 @@ public class ProductController {
     @PostMapping("/product")
     public ResponseEntity<Product> addProduct(@RequestBody Product product) {
 
-        Product productObj = productRepo.save(product);
+        Product productObj = productRepository.save(product);
 
         return new ResponseEntity<>(productObj, HttpStatus.OK);
     }
@@ -61,7 +61,7 @@ public class ProductController {
     @PostMapping("product/{id}")
     public ResponseEntity<Product> updateProductById(@PathVariable Long id, @RequestBody Product newProduct)
     {
-        Optional<Product> oldProduct = productRepo.findById(id);
+        Optional<Product> oldProduct = productRepository.findById(id);
 
         if(oldProduct.isPresent())
         {
@@ -83,7 +83,7 @@ public class ProductController {
                 updatedProduct.setImage(newProduct.getImage());
             }
             //
-            Product productObj = productRepo.save(updatedProduct);
+            Product productObj = productRepository.save(updatedProduct);
             return new ResponseEntity<>(productObj, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -91,7 +91,7 @@ public class ProductController {
 //
     @DeleteMapping("product/{id}")
     public ResponseEntity<HttpStatus> deleteProductById(@PathVariable Long id) {
-        productRepo.deleteById(id);
+        productRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

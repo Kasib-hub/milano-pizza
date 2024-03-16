@@ -1,7 +1,7 @@
 package com.ted.milanopizza.controller;
 
 import com.ted.milanopizza.model.Employee;
-import com.ted.milanopizza.repo.EmployeeRepo;
+import com.ted.milanopizza.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +16,13 @@ import java.util.Optional;
 @RestController
 public class EmployeeController {
     @Autowired
-    private EmployeeRepo employeeRepo;
+    private EmployeeRepository employeeRepository;
 
     @GetMapping("/employee")
     public ResponseEntity<List<Employee>> getAllEmployees() {
         try {
             List<Employee> employeeList = new ArrayList<>();
-            employeeRepo.findAll().forEach(employeeList::add);
+            employeeRepository.findAll().forEach(employeeList::add);
 
             if (employeeList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -37,7 +37,7 @@ public class EmployeeController {
 
     @GetMapping("/employee/{id}")
     public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
-        Optional<Employee> employeeData = employeeRepo.findById(id);
+        Optional<Employee> employeeData = employeeRepository.findById(id);
 
         if (employeeData.isPresent()) {
 
@@ -50,13 +50,13 @@ public class EmployeeController {
     @PostMapping("/employee")
     public ResponseEntity<Employee> addEmployee(@RequestBody Employee employee) {
 
-        Employee employeeObj = employeeRepo.save(employee);
+        Employee employeeObj = employeeRepository.save(employee);
 
         return new ResponseEntity<>(employeeObj, HttpStatus.OK);
     }
     @PostMapping("/employee/{id}")
     public ResponseEntity<Employee> updateEmployeeById(@PathVariable Long id, @RequestBody Employee newEmployeeData) {
-        Optional<Employee> oldEmployeeData = employeeRepo.findById(id);
+        Optional<Employee> oldEmployeeData = employeeRepository.findById(id);
 
         if (oldEmployeeData.isPresent()) {
             Employee updatedEmployeeData = oldEmployeeData.get();
@@ -74,7 +74,7 @@ public class EmployeeController {
 
             // new entity here
 
-            Employee employeeObj = employeeRepo.save(updatedEmployeeData);
+            Employee employeeObj = employeeRepository.save(updatedEmployeeData);
             return new ResponseEntity<>(employeeObj, HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -82,7 +82,7 @@ public class EmployeeController {
 
     @DeleteMapping("/employee/{id}")
     public ResponseEntity<HttpStatus> deleteEmployeeById(@PathVariable Long id) {
-        employeeRepo.deleteById(id);
+        employeeRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

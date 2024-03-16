@@ -1,4 +1,4 @@
-package com.ted.milanopizza.repo;
+package com.ted.milanopizza.repository;
 
 import com.ted.milanopizza.model.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,7 +11,7 @@ import java.util.Optional;
 
 // No Update/Delete
 @Repository
-public interface CustomerRepo extends JpaRepository<Customer, Long> {
+public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
     // I want the customer to return zipcode Id
     // Define a projection interface

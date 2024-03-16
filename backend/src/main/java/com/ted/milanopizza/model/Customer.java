@@ -9,6 +9,7 @@ import lombok.*;
 @Table(name = "Customer")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Data
 public class Customer {
     @Id
@@ -23,14 +24,6 @@ public class Customer {
     @JsonBackReference
     private Zipcode zipcode; // <-- needs to be a foreign key look that up!
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "telephoneID=" + telephoneID +
-                ", streetAddress='" + streetAddress + '\'' +
-                ", zipcode=" + (zipcode != null ? zipcode.getZipcodeID() : null) +
-                '}';
-    }
 }
 
 
