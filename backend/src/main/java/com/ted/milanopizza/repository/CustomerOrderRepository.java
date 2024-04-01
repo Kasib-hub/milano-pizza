@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, Long> {
+public interface CustomerOrderRepository extends JpaRepository<CustomerOrder, Integer> {
     // an interesting note is that I could only retrieve these Ids by making sure the casing was exact with aliases below
     public interface CustomerOrderWithAssociations {
         Long getID();

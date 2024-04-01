@@ -1,7 +1,6 @@
 package com.ted.milanopizza.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -26,8 +25,7 @@ public class Zipcode {
 
     // can't use zipcodeID as models have to be initialized with Id
     @Id
-    @JsonProperty("zipcodeId")
-    private Long zipcodeId;
+    private String zipcode;
     private String city;
     private String state;
     @OneToMany(mappedBy = "zipcode", cascade = {CascadeType.ALL})

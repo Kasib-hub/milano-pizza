@@ -1,7 +1,6 @@
 package com.ted.milanopizza.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -21,7 +20,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class Customer {
     @Id
-    @JsonProperty("telephone")
     private String telephone;
     private String streetAddress;
     // customer can also have many customerOrders, but not implemented, just made a route to show them

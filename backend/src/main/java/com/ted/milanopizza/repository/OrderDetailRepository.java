@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface OrderDetailRepository extends JpaRepository<OrderDetail, Long> {
+public interface OrderDetailRepository extends JpaRepository<OrderDetail, Integer> {
 
     public interface OrderDetailWithAssociations {
         Long getID();

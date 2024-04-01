@@ -11,9 +11,9 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -21,20 +21,20 @@ import java.time.LocalDateTime;
 @Table(name = "customer_order")
 @NoArgsConstructor
 @AllArgsConstructor
-@Setter
-@Getter
+@Data
+@Builder
 public class CustomerOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="telephone_id", nullable = false)
-    @JsonBackReference(value = "user-customer")
+    @JoinColumn(name="telephone", nullable = false)
+    @JsonBackReference(value = "customerTelephone")
     private Customer customer;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="employee_id", nullable = false)
+    @JoinColumn(name="employeeId", nullable = false)
     @JsonBackReference
     private Employee employee;
 
