@@ -17,16 +17,15 @@ public class ZipcodeService {
 
     public Zipcode updateZipcode(Long id, Zipcode newZipcodeData) {
         Optional<Zipcode> oldZipcodeData = zipcodeRepository.findById(id);
-
-        if (oldZipcodeData.isPresent()) {
-            Zipcode updatedZipcode = oldZipcodeData.get();
-            Util.updateIfNotNull(newZipcodeData.getZipcodeId(), updatedZipcode::setZipcodeId);
-            Util.updateIfNotNull(newZipcodeData.getCustomers(), updatedZipcode::setCustomers);
-            Util.updateIfNotNull(newZipcodeData.getCity(), updatedZipcode::setCity);
-            Util.updateIfNotNull(newZipcodeData.getState(), updatedZipcode::setState);
-            return updatedZipcode;
+        if (oldZipcodeData.isEmpty()) {
+            log.error("No data located for zipcode: {}", id);
+            return null;
         }
-        log.error("No data located for zipcode: {}", id);
-        return null;
+        Zipcode updatedZipcode = oldZipcodeData.get();
+        Util.updateIfNotNull(newZipcodeData.getZipcodeId(), updatedZipcode::setZipcodeId);
+        Util.updateIfNotNull(newZipcodeData.getCustomers(), updatedZipcode::setCustomers);
+        Util.updateIfNotNull(newZipcodeData.getCity(), updatedZipcode::setCity);
+        Util.updateIfNotNull(newZipcodeData.getState(), updatedZipcode::setState);
+        return updatedZipcode;
     }
 }
