@@ -1,4 +1,4 @@
-package com.ted.milanopizza;
+package com.ted.milanopizza.util;
 
 import java.util.function.Consumer;
 
