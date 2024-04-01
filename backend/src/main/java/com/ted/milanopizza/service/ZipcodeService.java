@@ -1,6 +1,6 @@
 package com.ted.milanopizza.service;
 
-import com.ted.milanopizza.Util;
+import com.ted.milanopizza.util.Util;
 import com.ted.milanopizza.model.Zipcode;
 import com.ted.milanopizza.repository.ZipcodeRepository;
 import lombok.AllArgsConstructor;

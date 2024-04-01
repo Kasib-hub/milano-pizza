@@ -11,11 +11,11 @@ import java.util.Optional;
 
 // No Update/Delete
 @Repository
-public interface CustomerRepository extends JpaRepository<Customer, Long> {
+public interface CustomerRepository extends JpaRepository<Customer, String> {
 
     // I want the customer to return zipcode Id
     // Define a projection interface
-    public interface CustomerWithZipcodeId {
+    interface CustomerWithZipcodeId {
         Long getTelephoneID();
         String getStreetAddress();
         Long getZipcodeId(); // Include the foreign key
