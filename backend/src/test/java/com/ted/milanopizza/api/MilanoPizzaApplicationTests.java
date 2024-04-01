@@ -4,9 +4,13 @@ import com.ted.milanopizza.model.Customer;
 import com.ted.milanopizza.repository.CustomerRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
@@ -28,4 +32,9 @@ class MilanoPizzaApplicationTests {
 				.toList();
 	}
 
+	@ParameterizedTest
+	@ValueSource(strings = {"hello", "world"})
+	void contextLoads(String input) {
+		assertThat(input).isEqualTo("hello");
+	}
 }
