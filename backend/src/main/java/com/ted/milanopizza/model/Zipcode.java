@@ -11,9 +11,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Table(name = "zipcode")
@@ -22,15 +20,12 @@ import java.util.List;
 @Data
 @Builder
 public class Zipcode {
-
-    // can't use zipcodeID as models have to be initialized with Id
     @Id
     private String zipcode;
     private String city;
     private String state;
     @OneToMany(mappedBy = "zipcode", cascade = {CascadeType.ALL})
     @JsonManagedReference
-    private List<Customer> customers = new ArrayList<>();
-
+    private List<Customer> customers;
 }
 

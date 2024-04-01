@@ -37,7 +37,7 @@ public class OrderDetail {
     @JoinColumn(name = "productId", nullable = false)
     @JsonBackReference
     private Product product;
-    private LocalDateTime orderDate;
+    private LocalDateTime orderDateTime;
     private int quantity;
     private int discount;
     private int subTotal;

@@ -62,13 +62,13 @@ public class CustomerController {
     // we instantiate the customer and set its parent!
     @PostMapping("/customer")
     public ResponseEntity<Customer> addCustomer(@RequestBody CustomerRequest customerRequest) {
-        Optional<Zipcode> zipcodeOptional = zipcodeRepository.findById(customerRequest.getZipcode_id());
+        Optional<Zipcode> zipcodeOptional = zipcodeRepository.findById(customerRequest.getZipcode());
         if (zipcodeOptional.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         Zipcode zipcode = zipcodeOptional.get();
         Customer customer = new Customer();
-        customer.setTelephoneID(customerRequest.getTelephoneID());
+        customer.setTelephone(customerRequest.getTelephone());
         customer.setStreetAddress(customerRequest.getStreetAddress());
         customer.setZipcode(zipcode);
         customerRepository.save(customer);
@@ -77,27 +77,15 @@ public class CustomerController {
 
     // update customer
     @PostMapping("/customer/{id}")
-    public ResponseEntity<Customer> updateCustomerById(@PathVariable Long id, @RequestBody CustomerRequest newCustomer) {
+    public ResponseEntity<Customer> updateCustomerById(@PathVariable String id, @RequestBody CustomerRequest newCustomer) {
         Optional<Customer> oldCustomerData = customerRepository.findById(id);
-        Optional<Zipcode> oldZipcodeData = zipcodeRepository.findById(newCustomer.getZipcode_id());
-
+        Optional<Zipcode> oldZipcodeData = zipcodeRepository.findById(newCustomer.getZipcode());
         if (oldCustomerData.isPresent() && oldZipcodeData.isPresent()) {
             Customer existingCustomer = oldCustomerData.get();
-            Zipcode existingZipcode = oldZipcodeData.get();
-
-            // I should update the non primary fields here with existing customer then make updated later
-            if (newCustomer.getStreetAddress() != null) {
-                existingCustomer.setStreetAddress(newCustomer.getStreetAddress());
-            }
-
-            if (newCustomer.getZipcode_id() != null) {
-                existingCustomer.setZipcode(existingZipcode);
-            }
-
             // make new object with updated values and give option to change telephone ID
             Customer updatedCustomer = new Customer();
             // changed to new telephoneID
-            updatedCustomer.setTelephoneID(newCustomer.getTelephoneID());
+            updatedCustomer.setTelephone(newCustomer.getTelephone());
             updatedCustomer.setStreetAddress(existingCustomer.getStreetAddress());
             updatedCustomer.setZipcode(existingCustomer.getZipcode());
 
@@ -108,7 +96,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/customer/{id}")
-    public ResponseEntity<HttpStatus> deleteZipcodeById(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> deleteZipcodeById(@PathVariable String id) {
         customerRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

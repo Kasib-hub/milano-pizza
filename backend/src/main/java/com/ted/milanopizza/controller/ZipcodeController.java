@@ -51,7 +51,7 @@ public class ZipcodeController {
     }
 
     @GetMapping("/zipcode/{id}")
-    public ResponseEntity<Zipcode> getZipcodeById(@PathVariable Long id) {
+    public ResponseEntity<Zipcode> getZipcodeById(@PathVariable String id) {
         Optional<Zipcode> zipcodeData = zipcodeRepository.findById(id);
 
         if (zipcodeData.isPresent()) {
@@ -71,7 +71,7 @@ public class ZipcodeController {
     }
 
     @PutMapping("/zipcode/{id}")
-    public ResponseEntity<Map<String, String>> updateZipcodeById(@PathVariable Long id, @RequestBody Zipcode newZipcodeData) {
+    public ResponseEntity<Map<String, String>> updateZipcodeById(@PathVariable String id, @RequestBody Zipcode newZipcodeData) {
         try {
             zipcodeService.updateZipcode(id, newZipcodeData);
             return new ResponseEntity<>(Map.of("Success", "Zipcode Updated!"), HttpStatus.OK);
@@ -82,7 +82,7 @@ public class ZipcodeController {
     }
 
     @DeleteMapping("/zipcode/{id}")
-    public ResponseEntity<HttpStatus> deleteZipcodeById(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> deleteZipcodeById(@PathVariable String id) {
         zipcodeRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

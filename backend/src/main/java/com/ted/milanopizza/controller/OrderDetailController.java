@@ -63,9 +63,9 @@ public class OrderDetailController {
     @PostMapping("customerOrder/{id}/orderDetail")
     public ResponseEntity<OrderDetail> addOrderDetail(@RequestBody OrderDetailRequest orderDetailRequest) {
         // find Customer Order and Product associated with this detail
-        Optional<CustomerOrder> customerOrderOptional = customerOrderRepository.findById(orderDetailRequest.getCustomerOrder_id());
-        Optional<Product> productOptional = productRepository.findById(orderDetailRequest.getProduct_id());
-        if (!customerOrderOptional.isPresent() || !productOptional.isPresent()) {
+        Optional<CustomerOrder> customerOrderOptional = customerOrderRepository.findById(orderDetailRequest.getCustomerOrderId());
+        Optional<Product> productOptional = productRepository.findById(orderDetailRequest.getProductId());
+        if (customerOrderOptional.isEmpty() || productOptional.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -76,7 +76,7 @@ public class OrderDetailController {
         OrderDetail orderDetail = new OrderDetail();
         orderDetail.setCustomerOrder(existingCustomerOrder);
         orderDetail.setProduct(existingProduct);
-        orderDetail.setOrderDate(orderDetailRequest.getOrderDate());
+        orderDetail.setOrderDateTime(orderDetailRequest.getOrderDateTime());
         orderDetail.setQuantity(orderDetailRequest.getQuantity());
         orderDetail.setDiscount(orderDetailRequest.getDiscount());
         orderDetail.setSubTotal(orderDetailRequest.getSubTotal());

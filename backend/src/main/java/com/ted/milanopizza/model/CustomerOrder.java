@@ -39,6 +39,6 @@ public class CustomerOrder {
     private Employee employee;
 
     @Column(nullable = true)
-    private LocalDateTime customerOrderDate;
+    private LocalDateTime customerOrderDateTime;
 }
 

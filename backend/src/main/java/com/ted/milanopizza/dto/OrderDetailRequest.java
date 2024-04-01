@@ -1,41 +1,22 @@
 package com.ted.milanopizza.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class OrderDetailRequest {
-    private Long id;
-    private Long customerOrder_id;
-    private Long product_id;
-    private LocalDateTime orderDate;
-    private Long quantity;
-    private Long discount;
-    private Double subTotal;
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getCustomerOrder_id() {
-        return customerOrder_id;
-    }
-
-    public Long getProduct_id() {
-        return product_id;
-    }
-
-    public LocalDateTime getOrderDate() {
-        return orderDate;
-    }
-
-    public Long getQuantity() {
-        return quantity;
-    }
-
-    public Long getDiscount() {
-        return discount;
-    }
-
-    public Double getSubTotal() {
-        return subTotal;
-    }
+    private int id;
+    private int customerOrderId;
+    private int productId;
+    private LocalDateTime orderDateTime;
+    private int quantity;
+    private int discount;
+    private int subTotal;
 }
