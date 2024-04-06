@@ -1,7 +1,6 @@
 package com.ted.milanopizza.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
@@ -11,9 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
-
 
 @Entity
 @Table(name = "zipcode")
@@ -22,15 +19,13 @@ import java.util.List;
 @Data
 @Builder
 public class Zipcode {
-
-    // can't use zipcodeID as models have to be initialized with Id
     @Id
     private String zipcode;
+    @Column(nullable = false)
     private String city;
+    @Column(nullable = false)
     private String state;
-    @OneToMany(mappedBy = "zipcode", cascade = {CascadeType.ALL})
-    @JsonManagedReference
-    private List<Customer> customers = new ArrayList<>();
-
+    @OneToMany(mappedBy = "zipcode")
+    private List<Customer> customers;
 }
 

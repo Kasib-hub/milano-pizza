@@ -1,8 +1,7 @@
 package com.ted.milanopizza.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -21,15 +20,11 @@ import lombok.NoArgsConstructor;
 public class Customer {
     @Id
     private String telephone;
+    @Column(nullable = false)
     private String streetAddress;
-    // customer can also have many customerOrders, but not implemented, just made a route to show them
-
-    // we're saying that customer is the many and that zipcode is a fk
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name="zipcode", nullable = false)
-    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name="zipcode_id", nullable = false)
     private Zipcode zipcode; // <-- needs to be a foreign key look that up!
-
 }
 
 

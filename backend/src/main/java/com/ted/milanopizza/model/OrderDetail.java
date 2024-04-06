@@ -1,9 +1,6 @@
 package com.ted.milanopizza.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,19 +23,17 @@ import java.time.LocalDateTime;
 public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "customerOrderId", nullable = false)
-    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "customer_order_id", nullable = false)
     private CustomerOrder customerOrder;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "productId", nullable = false)
-    @JsonBackReference
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
     private Product product;
-    private LocalDateTime orderDate;
-    private int quantity;
-    private int discount;
-    private int subTotal;
+    private LocalDateTime orderDateTime;
+    private Integer quantity;
+    private Integer discount;
+    private Integer subTotal;
 }
