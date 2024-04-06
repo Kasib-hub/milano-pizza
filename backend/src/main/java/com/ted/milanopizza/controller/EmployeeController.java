@@ -27,8 +27,7 @@ public class EmployeeController {
     @GetMapping("/employee")
     public ResponseEntity<List<Employee>> getAllEmployees() {
         try {
-            List<Employee> employeeList = new ArrayList<>();
-            employeeRepository.findAll().forEach(employeeList::add);
+            List<Employee> employeeList = new ArrayList<>(employeeRepository.findAll());
 
             if (employeeList.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -42,15 +41,11 @@ public class EmployeeController {
     }
 
     @GetMapping("/employee/{id}")
-    public ResponseEntity<Employee> getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable int id) {
         Optional<Employee> employeeData = employeeRepository.findById(id);
 
-        if (employeeData.isPresent()) {
+        return employeeData.map(employee -> new ResponseEntity<>(employee, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
 
-            return new ResponseEntity<>(employeeData.get(), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PostMapping("/employee")
@@ -61,7 +56,7 @@ public class EmployeeController {
         return new ResponseEntity<>(employeeObj, HttpStatus.OK);
     }
     @PostMapping("/employee/{id}")
-    public ResponseEntity<Employee> updateEmployeeById(@PathVariable Long id, @RequestBody Employee newEmployeeData) {
+    public ResponseEntity<Employee> updateEmployeeById(@PathVariable int id, @RequestBody Employee newEmployeeData) {
         Optional<Employee> oldEmployeeData = employeeRepository.findById(id);
 
         if (oldEmployeeData.isPresent()) {
@@ -74,8 +69,8 @@ public class EmployeeController {
             if (newEmployeeData.getLastName() != null) {
                 updatedEmployeeData.setLastName(newEmployeeData.getLastName());
             }
-            if (newEmployeeData.getStatus() != null) {
-                updatedEmployeeData.setStatus(newEmployeeData.getStatus());
+            if (newEmployeeData.isAdmin()) {
+                updatedEmployeeData.setAdmin(true);
             }
 
             // new entity here
@@ -87,7 +82,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/employee/{id}")
-    public ResponseEntity<HttpStatus> deleteEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> deleteEmployeeById(@PathVariable int id) {
         employeeRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

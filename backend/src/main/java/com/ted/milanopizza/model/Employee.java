@@ -22,6 +22,6 @@ public class Employee {
     private Integer id;
     private String firstName;
     private String lastName;
-    private Boolean status;
+    private boolean admin;
 }
 

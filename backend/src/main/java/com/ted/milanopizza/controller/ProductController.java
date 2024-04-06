@@ -47,7 +47,7 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+    public ResponseEntity<Product> getProductById(@PathVariable int id) {
         Optional<Product> productData = productRepository.findById(id);
 
         if (productData.isPresent()) {
@@ -66,19 +66,19 @@ public class ProductController {
     }
 
     @PostMapping("product/{id}")
-    public ResponseEntity<Product> updateProductById(@PathVariable Long id, @RequestBody Product newProduct)
+    public ResponseEntity<Product> updateProductById(@PathVariable int id, @RequestBody Product newProduct)
     {
         Optional<Product> oldProduct = productRepository.findById(id);
 
         if(oldProduct.isPresent())
         {
             Product updatedProduct = oldProduct.get();
-            if(newProduct.getPrice() != null)
+            if(newProduct.getPrice() != 0)
             {
                 updatedProduct.setPrice(newProduct.getPrice());
             }
 
-            if(newProduct.getDiscount() != null) {
+            if(newProduct.getDiscount() != 0) {
                 updatedProduct.setDiscount(newProduct.getDiscount());
             }
 
@@ -86,8 +86,8 @@ public class ProductController {
                 updatedProduct.setName(newProduct.getName());
             }
 
-            if(newProduct.getImage() != null) {
-                updatedProduct.setImage(newProduct.getImage());
+            if(newProduct.getImageUrl() != null) {
+                updatedProduct.setImageUrl(newProduct.getImageUrl());
             }
             //
             Product productObj = productRepository.save(updatedProduct);
@@ -97,7 +97,7 @@ public class ProductController {
     }
 //
     @DeleteMapping("product/{id}")
-    public ResponseEntity<HttpStatus> deleteProductById(@PathVariable Long id) {
+    public ResponseEntity<HttpStatus> deleteProductById(@PathVariable int id) {
         productRepository.deleteById(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }

@@ -27,7 +27,7 @@ class MilanoPizzaApplicationTests {
 	void testCustomerLambda() {
 		// map to
 		List<String> customerList = customerRepository.findAll().stream()
-				.filter(customer -> customer.getTelephone() > 5000)
+				.filter(customer -> customer.getTelephone().startsWith("0"))
 				.map(Customer::getStreetAddress)
 				.toList();
 	}

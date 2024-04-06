@@ -95,9 +95,9 @@ public class CustomerOrderController {
     @PostMapping("/customerOrder")
     public ResponseEntity<CustomerOrder> addCustomerOrder(@RequestBody CustomerOrderRequest customerOrderRequest) {
         // find customer and employee and associate with this order
-        Optional<Customer> customerOptional = customerRepository.findById(customerOrderRequest.getTelephone_id());
-        Optional<Employee> employeeOptional = employeeRepository.findById(customerOrderRequest.getEmployee_id());
-        if (!customerOptional.isPresent() || !employeeOptional.isPresent()) {
+        Optional<Customer> customerOptional = customerRepository.findById(customerOrderRequest.getTelephone());
+        Optional<Employee> employeeOptional = employeeRepository.findById(customerOrderRequest.getEmployeeId());
+        if (customerOptional.isEmpty() || employeeOptional.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         // retrieve customer and employee from db
@@ -116,16 +116,16 @@ public class CustomerOrderController {
     }
 
     @PostMapping("/customerOrder/{id}")
-    public ResponseEntity<CustomerOrder> updateCustomerOrderById(@PathVariable Long id, @RequestBody CustomerOrder newCustomerOrder)
+    public ResponseEntity<CustomerOrder> updateCustomerOrderById(@PathVariable int id, @RequestBody CustomerOrder newCustomerOrder)
     {
         Optional<CustomerOrder> oldCustomerOrder = customerOrderRepository.findById(id);
 
         if(oldCustomerOrder.isPresent())
         {
             CustomerOrder updatedCustomerOrder = oldCustomerOrder.get();
-            if(newCustomerOrder.getCustomerOrderDate() != null)
+            if(newCustomerOrder.getCustomerOrderDateTime() != null)
             {
-                updatedCustomerOrder.setCustomerOrderDate(newCustomerOrder.getCustomerOrderDate());
+                updatedCustomerOrder.setCustomerOrderDateTime(newCustomerOrder.getCustomerOrderDateTime());
             }
             //
             CustomerOrder customerOrderObj = customerOrderRepository.save(updatedCustomerOrder);
