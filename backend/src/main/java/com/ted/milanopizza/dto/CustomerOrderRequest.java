@@ -12,8 +12,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class CustomerOrderRequest {
-    private int id;
+    private Integer id;
     private String telephone;
-    private int employeeId;
+    private Integer employeeId;
     private LocalDateTime customerOrderDateTime;
 }

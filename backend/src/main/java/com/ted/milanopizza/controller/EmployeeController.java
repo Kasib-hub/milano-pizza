@@ -69,8 +69,8 @@ public class EmployeeController {
             if (newEmployeeData.getLastName() != null) {
                 updatedEmployeeData.setLastName(newEmployeeData.getLastName());
             }
-            if (newEmployeeData.isAdmin()) {
-                updatedEmployeeData.setAdmin(true);
+            if (newEmployeeData.getIsAdmin() != null) {
+                updatedEmployeeData.setIsAdmin(true);
             }
 
             // new entity here

@@ -1,0 +1,44 @@
+
+customer
+-
+telephone PK varchar
+streetAddress varchar
+zipcode_id string FK >- zipcode.zipcode
+
+zipcode
+-
+zipcode PK varchar
+city varchar
+state varchar
+
+employee
+-
+id PK int
+firstName varchar
+lastName varchar
+isAdmin boolean
+
+product
+-
+id PK int
+name varchar
+price int
+discount int
+image_url varchar
+
+customer_order
+-
+id PK int
+customer_id varchar FK >- customer.telephone
+employee_id varchar FK >- employee.id
+customerOrderDateTime datetime
+
+order_detail
+-
+id PK int
+customer_order_id int FK >- customer_order.id
+product_id int FK >- product.id
+quantity int
+discount int
+sub_total int
+order_date_time datetime

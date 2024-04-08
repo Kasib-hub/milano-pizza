@@ -11,13 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin("http://localhost:5173")
@@ -33,32 +30,32 @@ public class OrderDetailController {
     @Autowired
     private ProductRepository productRepository;
 
-    @GetMapping("customerOrder/{id}/orderDetail")
-    public ResponseEntity<List<OrderDetailRepository.OrderDetailWithAssociations>> getOrderDetailByCustomerOrderId(@PathVariable Long id) {
-        List<OrderDetailRepository.OrderDetailWithAssociations> orderDetailData = orderDetailRepository.findOrderDetailByCustomerOrderIdWithAssociations(id);
-        if (orderDetailData.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(orderDetailData, HttpStatus.OK);
-    }
-
-    @GetMapping("product/{id}/orderDetail")
-    public ResponseEntity<List<OrderDetailRepository.OrderDetailWithAssociations>> getOrderDetailByProductId(@PathVariable Long id) {
-        List<OrderDetailRepository.OrderDetailWithAssociations> orderDetailData = orderDetailRepository.findOrderDetailByProductIdWithAssociations(id);
-        if (orderDetailData.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(orderDetailData, HttpStatus.OK);
-    }
-
-    @GetMapping("zipcode/{id}/orderDetail")
-    public ResponseEntity<List<OrderDetailRepository.OrderDetailWithAssociations>> getOrderDetailByZipcode(@PathVariable Long id) {
-        List<OrderDetailRepository.OrderDetailWithAssociations> orderDetailData = orderDetailRepository.findOrderDetailByZipcodeWithAssociations(id);
-        if (orderDetailData.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(orderDetailData, HttpStatus.OK);
-    }
+//    @GetMapping("customerOrder/{id}/orderDetail")
+//    public ResponseEntity<List<OrderDetailRepository.OrderDetailWithAssociations>> getOrderDetailByCustomerOrderId(@PathVariable Long id) {
+//        List<OrderDetailRepository.OrderDetailWithAssociations> orderDetailData = orderDetailRepository.findOrderDetailByCustomerOrderIdWithAssociations(id);
+//        if (orderDetailData.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(orderDetailData, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("product/{id}/orderDetail")
+//    public ResponseEntity<List<OrderDetailRepository.OrderDetailWithAssociations>> getOrderDetailByProductId(@PathVariable Long id) {
+//        List<OrderDetailRepository.OrderDetailWithAssociations> orderDetailData = orderDetailRepository.findOrderDetailByProductIdWithAssociations(id);
+//        if (orderDetailData.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(orderDetailData, HttpStatus.OK);
+//    }
+//
+//    @GetMapping("zipcode/{id}/orderDetail")
+//    public ResponseEntity<List<OrderDetailRepository.OrderDetailWithAssociations>> getOrderDetailByZipcode(@PathVariable Long id) {
+//        List<OrderDetailRepository.OrderDetailWithAssociations> orderDetailData = orderDetailRepository.findOrderDetailByZipcodeWithAssociations(id);
+//        if (orderDetailData.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//        }
+//        return new ResponseEntity<>(orderDetailData, HttpStatus.OK);
+//    }
 
     @PostMapping("customerOrder/{id}/orderDetail")
     public ResponseEntity<OrderDetail> addOrderDetail(@RequestBody OrderDetailRequest orderDetailRequest) {

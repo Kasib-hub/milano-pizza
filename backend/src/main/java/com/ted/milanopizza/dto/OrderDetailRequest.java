@@ -12,11 +12,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class OrderDetailRequest {
-    private int id;
-    private int customerOrderId;
-    private int productId;
+    private Integer id;
+    private Integer customerOrderId;
+    private Integer productId;
     private LocalDateTime orderDateTime;
-    private int quantity;
-    private int discount;
-    private int subTotal;
+    private Integer quantity;
+    private Integer discount;
+    private Integer subTotal;
 }

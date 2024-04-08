@@ -11,13 +11,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin("http://localhost:5173")
@@ -30,30 +28,30 @@ public class CustomerController {
     @Autowired
     private ZipcodeRepository zipcodeRepository;
 
-    @GetMapping("/customer")
-    public ResponseEntity<List<CustomerRepository.CustomerWithZipcodeId>>getAllCustomers() {
-        try {
-            List<CustomerRepository.CustomerWithZipcodeId> customerList = customerRepository.findAllWithZipcodeId();
+//    @GetMapping("/customer")
+//    public ResponseEntity<List<CustomerRepository.CustomerWithZipcodeId>>getAllCustomers() {
+//        try {
+//            List<CustomerRepository.CustomerWithZipcodeId> customerList = customerRepository.findAllWithZipcodeId();
+//
+//            if (customerList.isEmpty()) {
+//                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//            }
+//            log.info("SUCCESS: CUSTOMERS RETURNED");
+//            return new ResponseEntity<>(customerList, HttpStatus.OK);
+//        } catch (Exception e) {
+//            log.error("### SERVER ERROR: {}", e.getMessage());
+//            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
-            if (customerList.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            log.info("SUCCESS: CUSTOMERS RETURNED");
-            return new ResponseEntity<>(customerList, HttpStatus.OK);
-        } catch (Exception e) {
-            log.error("### SERVER ERROR: {}", e.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @GetMapping("/customer/{id}")
-    public ResponseEntity<CustomerRepository.CustomerWithZipcodeId> getCustomerById(@PathVariable Long id) {
-
-        Optional<CustomerRepository.CustomerWithZipcodeId> customerData = customerRepository.findByIdWithZipcode(id);
-
-        return customerData.map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+//    @GetMapping("/customer/{id}")
+//    public ResponseEntity<CustomerRepository.CustomerWithZipcodeId> getCustomerById(@PathVariable Long id) {
+//
+//        Optional<CustomerRepository.CustomerWithZipcodeId> customerData = customerRepository.findByIdWithZipcode(id);
+//
+//        return customerData.map(customer -> new ResponseEntity<>(customer, HttpStatus.OK))
+//                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+//    }
 
 
     

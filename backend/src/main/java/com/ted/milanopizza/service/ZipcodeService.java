@@ -22,6 +22,7 @@ public class ZipcodeService {
             return;
         }
         Zipcode updatedZipcode = oldZipcodeData.get();
+        log.debug("Updating Zipcode: {}", updatedZipcode.getZipcode());
         Util.updateIfNotNull(newZipcodeData.getZipcode(), updatedZipcode::setZipcode);
         Util.updateIfNotNull(newZipcodeData.getCustomers(), updatedZipcode::setCustomers);
         Util.updateIfNotNull(newZipcodeData.getCity(), updatedZipcode::setCity);
